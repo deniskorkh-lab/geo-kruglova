@@ -194,8 +194,8 @@
         </div>
     </footer>
 
-    <!-- AI CHAT (модальное окно) -->
-    <div class="ai-modal" x-data="aiChat()" x-init="init()" :class="{ 'open': open }" @open-ai-chat.window="toggle()" @click.self="close()">
+    <!-- AI CHAT (МОДАЛЬНОЕ ОКНО – ЗАКРЫТО ПО УМОЛЧАНИЮ) -->
+    <div class="ai-modal" x-data="aiChat()" x-init="init()" :class="{ 'open': open }" @open-ai-chat.window="openChat()" @click.self="close()">
         <div class="ai-modal__body" @click.stop>
             <div class="ai-modal__header">
                 <span class="ai-modal__avatar">🧑‍💻</span>
