@@ -11,6 +11,64 @@
     <link rel="stylesheet" href="styles.css" />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
     <script defer src="app.js"></script>
+    <style>
+        /* Стили для карточек объектов с изображениями */
+        .portfolio__item {
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: var(--radius);
+            aspect-ratio: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 1.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid rgba(184, 156, 109, 0.08);
+        }
+        .portfolio__item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 60%);
+            transition: var(--transition);
+        }
+        .portfolio__item:hover::before {
+            background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%);
+        }
+        .portfolio__item:hover {
+            transform: scale(1.03);
+            border-color: var(--gold);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .portfolio__item .label {
+            position: relative;
+            z-index: 1;
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-primary);
+            text-align: center;
+            opacity: 1;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+        }
+        .portfolio__item .label small {
+            display: block;
+            font-size: 0.7rem;
+            opacity: 0.7;
+            font-weight: 300;
+            margin-top: 0.3rem;
+        }
+        /* Фоновые изображения для объектов */
+        .portfolio__item--1 { background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=400&fit=crop'); }
+        .portfolio__item--2 { background-image: url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400&h=400&fit=crop'); }
+        .portfolio__item--3 { background-image: url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=400&fit=crop'); }
+        .portfolio__item--4 { background-image: url('https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&h=400&fit=crop'); }
+    </style>
 </head>
 <body>
 
@@ -67,7 +125,6 @@
             <div class="hero__btn">
                 <a href="contacts.html" class="btn btn--lg">Заказать абсолютную точность</a>
             </div>
-            <!-- КНОПКА В WHATSAPP (ВМЕСТО AI-ЧАТА) -->
             <div class="hero__btn-ai">
                 <a href="https://wa.me/79263484703" target="_blank" class="btn btn--ai">
                     <span>✦</span> Гео-Консультант
@@ -174,29 +231,29 @@
         </div>
     </section>
 
-    <!-- PORTFOLIO -->
+    <!-- PORTFOLIO (ОБНОВЛЁННЫЙ – с картинками) -->
     <section class="portfolio fade-up">
         <div class="container">
             <h2 class="section-title">Объекты</h2>
-            <p class="section-subtitle">Конфиденциальные проекты</p>
+            <p class="section-subtitle">Выполненные проекты</p>
             <div class="portfolio__grid">
-                <div class="portfolio__item fade-up">
-                    <span class="label">Резиденция N • 14 дней</span>
+                <div class="portfolio__item portfolio__item--1">
+                    <span class="label">Коттедж «Миллениум Парк»<small>280 м² • 14 дней</small></span>
                 </div>
-                <div class="portfolio__item fade-up">
-                    <span class="label">Коттеджный посёлок «Лесной» • 21 день</span>
+                <div class="portfolio__item portfolio__item--2">
+                    <span class="label">Резиденция «Остров»<small>1,2 Га • 21 день</small></span>
                 </div>
-                <div class="portfolio__item fade-up">
-                    <span class="label">Земельный банк 120 Га • 30 дней</span>
+                <div class="portfolio__item portfolio__item--3">
+                    <span class="label">Земельный банк 120 Га<small>Тверская область • 30 дней</small></span>
                 </div>
-                <div class="portfolio__item fade-up">
-                    <span class="label">Исправление реестра • 10 дней</span>
+                <div class="portfolio__item portfolio__item--4">
+                    <span class="label">Исправление реестра<small>Московская область • 10 дней</small></span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- REVIEWS -->
+    <!-- REVIEWS (ОБНОВЛЁННЫЕ) -->
     <section class="reviews fade-up" x-data="reviewsCarousel()">
         <div class="container">
             <h2 class="section-title">Отзывы</h2>
@@ -228,7 +285,7 @@
         </div>
     </section>
 
-    <!-- FAQ -->
+    <!-- FAQ (первые 5 вопросов) -->
     <section class="faq fade-up" x-data="faqApp()">
         <div class="container">
             <h2 class="section-title">Часто задаваемые вопросы</h2>
@@ -252,7 +309,7 @@
         </div>
     </section>
 
-    <!-- FORM / CONTACT -->
+    <!-- FORM -->
     <section class="contact-form fade-up" id="contact">
         <div class="container">
             <h2 class="section-title">Оставьте координаты</h2>
