@@ -67,11 +67,11 @@
             <div class="hero__btn">
                 <a href="contacts.html" class="btn btn--lg">Заказать абсолютную точность</a>
             </div>
-            <!-- КНОПКА В WHATSAPP (ВМЕСТО AI-ЧАТА) -->
+            <!-- КНОПКА AI-КОНСУЛЬТАНТА -->
             <div class="hero__btn-ai">
-                <a href="https://wa.me/79263484703" target="_blank" class="btn btn--ai">
+                <button class="btn btn--ai" @click="$dispatch('open-ai-chat')">
                     <span>✦</span> Гео-Консультант
-                </a>
+                </button>
             </div>
             <div class="hero__stats">
                 <div><span>500+</span> гектаров</div>
@@ -106,12 +106,13 @@
         </div>
     </section>
 
-    <!-- SERVICES -->
+    <!-- SERVICES (разделены на физлиц и юрлиц) -->
     <section class="services fade-up">
         <div class="container">
             <h2 class="section-title">Услуги</h2>
             <p class="section-subtitle">Для частных лиц и девелоперов</p>
             <div class="services__wrapper">
+                <!-- Физические лица -->
                 <div class="services__group fade-up">
                     <h3 class="services__group-title">Частным лицам</h3>
                     <div class="services__list">
@@ -141,6 +142,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- Юридические лица -->
                 <div class="services__group fade-up">
                     <h3 class="services__group-title">Бизнесу</h3>
                     <div class="services__list">
@@ -228,7 +230,7 @@
         </div>
     </section>
 
-    <!-- FAQ -->
+    <!-- FAQ (первые 5 вопросов) -->
     <section class="faq fade-up" x-data="faqApp()">
         <div class="container">
             <h2 class="section-title">Часто задаваемые вопросы</h2>
@@ -308,6 +310,36 @@
             </div>
         </div>
     </footer>
+
+    <!-- AI CHAT (модальное окно вместо плавающего виджета) -->
+    <div class="ai-modal" x-data="aiChat()" x-init="init()" :class="{ 'open': open }" @open-ai-chat.window="toggle()" @click.self="close()">
+        <div class="ai-modal__body" @click.stop>
+            <div class="ai-modal__header">
+                <span class="ai-modal__avatar">🧑‍💻</span>
+                <div class="ai-modal__title">
+                    Гео-Консультант
+                    <span class="ai-modal__status">онлайн</span>
+                </div>
+                <button class="ai-modal__close" @click="close()">✕</button>
+            </div>
+            <div class="ai-modal__messages" x-ref="messages">
+                <template x-for="msg in messages" :key="msg.id">
+                    <div class="ai-modal__msg" :class="msg.role">
+                        <span x-text="msg.text"></span>
+                        <small class="ai-modal__time" x-text="msg.time"></small>
+                    </div>
+                </template>
+            </div>
+            <div class="ai-modal__input">
+                <input type="text" x-model="inputText" placeholder="Напишите ваш вопрос..." @keydown.enter="sendMessage()" />
+                <button @click="sendMessage()">→</button>
+            </div>
+            <div class="ai-modal__footer">
+                <button class="btn btn--ghost" @click="callHuman()">📞 Позвать инженера</button>
+                <button class="btn" @click="callHuman()">💬 Спросить в WhatsApp</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Schema.org -->
     <script type="application/ld+json">
