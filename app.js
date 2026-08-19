@@ -24,8 +24,8 @@ document.addEventListener('alpine:init', () => {
         }
     }));
 
-    // ----- AI ASSISTANT -----
-    Alpine.data('aiAssistant', () => ({
+    // ----- AI CHAT (для модального окна) -----
+    Alpine.data('aiChat', () => ({
         open: false,
         inputText: '',
         messages: [],
@@ -36,9 +36,21 @@ document.addEventListener('alpine:init', () => {
                 time: new Date().toLocaleTimeString(),
                 id: Date.now()
             });
+            // Закрытие по Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && this.open) {
+                    this.open = false;
+                }
+            });
         },
         toggle() {
             this.open = !this.open;
+            if (this.open) {
+                this.$nextTick(() => {
+                    const input = document.querySelector('.ai-modal__input input');
+                    if (input) input.focus();
+                });
+            }
         },
         sendMessage() {
             const text = this.inputText.trim();
@@ -76,13 +88,15 @@ document.addEventListener('alpine:init', () => {
             }
 
             if (reply) {
-                this.messages.push({
-                    role: 'assistant',
-                    text: reply,
-                    time: new Date().toLocaleTimeString(),
-                    id: Date.now()
-                });
-                this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight;
+                setTimeout(() => {
+                    this.messages.push({
+                        role: 'assistant',
+                        text: reply,
+                        time: new Date().toLocaleTimeString(),
+                        id: Date.now()
+                    });
+                    this.scrollToBottom();
+                }, 300);
                 return;
             }
 
@@ -100,14 +114,20 @@ document.addEventListener('alpine:init', () => {
                     time: new Date().toLocaleTimeString(),
                     id: Date.now()
                 });
-                this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight;
+                this.scrollToBottom();
             }, 400);
-            setTimeout(() => {
-                this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight;
-            }, 100);
+        },
+        scrollToBottom() {
+            this.$nextTick(() => {
+                const container = document.querySelector('.ai-modal__messages');
+                if (container) container.scrollTop = container.scrollHeight;
+            });
         },
         callHuman() {
             window.open('https://wa.me/79263484703', '_blank');
+        },
+        close() {
+            this.open = false;
         }
     }));
 
