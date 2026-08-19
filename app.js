@@ -1,6 +1,6 @@
 document.addEventListener('alpine:init', () => {
 
-    // ----- CALCULATOR -----
+    // ----- CALCULATOR (основной) -----
     Alpine.data('calculatorApp', () => ({
         objectType: 'izhs',
         area: 10,
@@ -9,6 +9,9 @@ document.addEventListener('alpine:init', () => {
         urgency: 0,
         savingsDays: 5,
         result: 0,
+        showPopup: false,
+        popupResult: 0,
+        popupArea: 10,
         init() {
             this.calculate();
         },
@@ -21,113 +24,47 @@ document.addEventListener('alpine:init', () => {
             if (this.complexity == 1) total *= 1.15;
             if (this.urgency == 1) total *= 1.25;
             this.result = Math.round(total);
+            this.popupResult = this.result;
+        },
+        // Открыть попап с ценой
+        openPopup() {
+            this.calculate();
+            this.showPopup = true;
+            this.popupArea = this.area;
+            document.body.style.overflow = 'hidden';
+        },
+        closePopup() {
+            this.showPopup = false;
+            document.body.style.overflow = '';
+        },
+        // Оставить заявку
+        submitRequest() {
+            this.closePopup();
+            window.location.href = 'contacts.html';
         }
     }));
 
-    // ----- AI CHAT (для модального окна) -----
-    Alpine.data('aiChat', () => ({
-        open: false,
-        inputText: '',
-        messages: [],
-        init() {
-            this.messages.push({
-                role: 'assistant',
-                text: 'Здравствуйте! Я Гео-Консультант. Расскажу о стоимости и сроках. Напишите "Участок", чтобы начать, или задайте любой вопрос по межеванию.',
-                time: new Date().toLocaleTimeString(),
-                id: Date.now()
-            });
-            // Закрытие по Escape
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && this.open) {
-                    this.open = false;
-                }
-            });
+    // ----- POPUP CALCULATOR (для пересчёта внутри окна) -----
+    Alpine.data('popupCalculator', () => ({
+        objectType: 'izhs',
+        area: 10,
+        distance: 0,
+        complexity: 0,
+        urgency: 0,
+        result: 0,
+        init(initialArea) {
+            if (initialArea) this.area = parseInt(initialArea) || 10;
+            this.calculate();
         },
-        toggle() {
-            this.open = !this.open;
-            if (this.open) {
-                this.$nextTick(() => {
-                    const input = document.querySelector('.ai-modal__input input');
-                    if (input) input.focus();
-                });
-            }
-        },
-        sendMessage() {
-            const text = this.inputText.trim();
-            if (!text) return;
-            this.messages.push({
-                role: 'user',
-                text: text,
-                time: new Date().toLocaleTimeString(),
-                id: Date.now()
-            });
-            this.inputText = '';
-            const lower = text.toLowerCase();
-
-            const faqAnswers = {
-                'стоит': 'Стоимость зависит от площади, удаленности и сложности. Для 6 соток в городе — от 10 000 до 15 000 ₽. Точную смету дам после проверки выписки ЕГРН.',
-                'срок': 'В среднем 14–21 день: 3–5 дней на выезд и чертежи, 7–10 дней на Росреестр. Есть ускоренная подача.',
-                'гарантия': 'Да, гарантирую постановку на учёт. Если приостановка по моей вине — исправляю бесплатно.',
-                'старые документы': 'Старые документы подтверждают право, но не содержат координат. Нужно современное межевание для внесения в ЕГРН.',
-                'сосед': 'Да, согласие соседей обязательно. Если отказываются — публикуем объявление в газете, это заменяет подпись.',
-                'забор': 'Закажите вынос точек в натуру. Если сосед захватил землю — сначала мирно, потом досудебная претензия или суд.',
-                'приостановка': 'Приостановка — не отказ. Причины: наложение границ, отсутствие согласия, несоответствие пятна застройки. Пришлите номер заявления — скажу, как исправить.',
-                'реестровая ошибка': 'Ошибка на карте – реестровая. Нужен новый межевой план и согласование правильных координат.',
-                'выезд': 'Если ошибка координатная, выезд обязателен. Без замера не доказать Росреестру.',
-                'технический план': 'Межевой — для земли, технический — для строений (дома, гаражи).',
-                'сарай': 'Капитальные строения лучше регистрировать, чтобы избежать самостроя и застраховать.',
-                'магазин': 'На ИЖС только жилой дом. Коммерция запрещена, но можно изменить ВРИ через администрацию.'
-            };
-
-            let reply = null;
-            for (const [key, answer] of Object.entries(faqAnswers)) {
-                if (lower.includes(key)) {
-                    reply = answer;
-                    break;
-                }
-            }
-
-            if (reply) {
-                setTimeout(() => {
-                    this.messages.push({
-                        role: 'assistant',
-                        text: reply,
-                        time: new Date().toLocaleTimeString(),
-                        id: Date.now()
-                    });
-                    this.scrollToBottom();
-                }, 300);
-                return;
-            }
-
-            if (lower.includes('участок') || lower.includes('участка')) {
-                reply = 'Отлично! Уточните площадь участка (в сотках) и есть ли у вас старые документы (свидетельство, выписка)?';
-            } else if (lower.includes('сот') || lower.includes('площадь')) {
-                reply = 'Спасибо! Предварительная стоимость: 10 000 – 18 000 ₽. Оставьте номер телефона, я пришлю памятку PDF и проверю ограничения зоны через API ПЗЗ.';
-            } else {
-                reply = 'Я помогу вам с расчётом. Напишите "Участок", и мы начнём. Или задайте конкретный вопрос по межеванию.';
-            }
-            setTimeout(() => {
-                this.messages.push({
-                    role: 'assistant',
-                    text: reply,
-                    time: new Date().toLocaleTimeString(),
-                    id: Date.now()
-                });
-                this.scrollToBottom();
-            }, 400);
-        },
-        scrollToBottom() {
-            this.$nextTick(() => {
-                const container = document.querySelector('.ai-modal__messages');
-                if (container) container.scrollTop = container.scrollHeight;
-            });
-        },
-        callHuman() {
-            window.open('https://wa.me/79263484703', '_blank');
-        },
-        close() {
-            this.open = false;
+        calculate() {
+            let base = 0;
+            const rates = { izhs: 1000, lph: 1000, commercial: 1500 };
+            base = rates[this.objectType] || 1000;
+            let total = base * this.area;
+            if (this.distance == 1) total *= 1.2;
+            if (this.complexity == 1) total *= 1.15;
+            if (this.urgency == 1) total *= 1.25;
+            this.result = Math.round(total);
         }
     }));
 
