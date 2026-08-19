@@ -194,35 +194,5 @@
         </div>
     </footer>
 
-    <!-- AI CHAT (МОДАЛЬНОЕ ОКНО – ЗАКРЫТО ПО УМОЛЧАНИЮ) -->
-    <div class="ai-modal" x-data="aiChat()" x-init="init()" :class="{ 'open': open }" @open-ai-chat.window="openChat()" @click.self="close()">
-        <div class="ai-modal__body" @click.stop>
-            <div class="ai-modal__header">
-                <span class="ai-modal__avatar">🧑‍💻</span>
-                <div class="ai-modal__title">
-                    Гео-Консультант
-                    <span class="ai-modal__status">онлайн</span>
-                </div>
-                <button class="ai-modal__close" @click="close()">✕</button>
-            </div>
-            <div class="ai-modal__messages" x-ref="messages">
-                <template x-for="msg in messages" :key="msg.id">
-                    <div class="ai-modal__msg" :class="msg.role">
-                        <span x-text="msg.text"></span>
-                        <small class="ai-modal__time" x-text="msg.time"></small>
-                    </div>
-                </template>
-            </div>
-            <div class="ai-modal__input">
-                <input type="text" x-model="inputText" placeholder="Напишите ваш вопрос..." @keydown.enter="sendMessage()" />
-                <button @click="sendMessage()">→</button>
-            </div>
-            <div class="ai-modal__footer">
-                <button class="btn btn--ghost" @click="callHuman()">📞 Позвать инженера</button>
-                <button class="btn" @click="callHuman()">💬 Спросить в WhatsApp</button>
-            </div>
-        </div>
-    </div>
-
 </body>
 </html>
