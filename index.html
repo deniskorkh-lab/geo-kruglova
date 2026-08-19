@@ -67,7 +67,7 @@
             <div class="hero__btn">
                 <a href="contacts.html" class="btn btn--lg">Заказать абсолютную точность</a>
             </div>
-            <!-- КНОПКА AI-КОНСУЛЬТАНТА -->
+            <!-- КНОПКА AI-КОНСУЛЬТАНТА (открывает чат) -->
             <div class="hero__btn-ai">
                 <button class="btn btn--ai" @click="$dispatch('open-ai-chat')">
                     <span>✦</span> Гео-Консультант
@@ -311,8 +311,8 @@
         </div>
     </footer>
 
-    <!-- AI CHAT (модальное окно вместо плавающего виджета) -->
-    <div class="ai-modal" x-data="aiChat()" x-init="init()" :class="{ 'open': open }" @open-ai-chat.window="toggle()" @click.self="close()">
+    <!-- AI CHAT (МОДАЛЬНОЕ ОКНО – ЗАКРЫТО ПО УМОЛЧАНИЮ) -->
+    <div class="ai-modal" x-data="aiChat()" x-init="init()" :class="{ 'open': open }" @open-ai-chat.window="openChat()" @click.self="close()">
         <div class="ai-modal__body" @click.stop>
             <div class="ai-modal__header">
                 <span class="ai-modal__avatar">🧑‍💻</span>
