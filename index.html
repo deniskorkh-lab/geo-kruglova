@@ -1137,75 +1137,6 @@
             color: var(--secondary-color);
         }
 
-        /* ===== UPSELL POPUP ===== */
-        .upsell-popup {
-            position: fixed;
-            inset: 0;
-            z-index: 300;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .upsell-popup__overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-        }
-        .upsell-popup__body {
-            position: relative;
-            background: var(--white);
-            padding: 2.5rem 2rem;
-            border-radius: var(--radius);
-            max-width: 420px;
-            width: 90%;
-            text-align: center;
-            box-shadow: var(--shadow-lg);
-            animation: popIn 0.3s ease;
-        }
-        @keyframes popIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        .upsell-popup__close {
-            position: absolute;
-            top: 12px;
-            right: 16px;
-            background: none;
-            border: none;
-            font-size: 1.4rem;
-            cursor: pointer;
-            color: var(--text-light);
-            transition: var(--transition);
-        }
-        .upsell-popup__close:hover {
-            color: var(--text-dark);
-        }
-        .upsell-popup__icon {
-            font-size: 3.2rem;
-            display: block;
-        }
-        .upsell-popup h3 {
-            margin: 0.5rem 0;
-            font-size: 1.4rem;
-        }
-        .upsell-popup p {
-            margin-bottom: 1.5rem;
-            color: var(--text-light);
-        }
-        .upsell-popup__skip {
-            background: none;
-            border: none;
-            color: var(--text-light);
-            margin-top: 0.8rem;
-            cursor: pointer;
-            text-decoration: underline;
-            font-size: 0.9rem;
-        }
-        .upsell-popup__skip:hover {
-            color: var(--text-dark);
-        }
-
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
             .hero__inner {
@@ -1348,7 +1279,7 @@
 
     <main>
 
-        <!-- ===== HERO (без города) ===== -->
+        <!-- ===== HERO ===== -->
         <section class="hero" id="hero">
             <div class="container hero__inner">
                 <div class="hero__content">
@@ -1602,7 +1533,7 @@
             </div>
         </section>
 
-        <!-- ===== CALCULATOR & GUARANTEE (без изменений) ===== -->
+        <!-- ===== CALCULATOR & GUARANTEE ===== -->
         <section class="calculator" id="calculator" x-data="calculatorApp()">
             <div class="container">
                 <h2 class="section-title">Калькулятор стоимости</h2>
@@ -1804,19 +1735,6 @@
             </div>
         </footer>
 
-        <!-- ===== UPSELL POPUP ===== -->
-        <div class="upsell-popup" x-data="upsellApp()" x-show="visible" x-transition>
-            <div class="upsell-popup__overlay" @click="close()"></div>
-            <div class="upsell-popup__body">
-                <button class="upsell-popup__close" @click="close()">✕</button>
-                <span class="upsell-popup__icon">💡</span>
-                <h3>Получите ТУ на газ и свет!</h3>
-                <p>После регистрации права мы помогаем получить технические условия на подключение коммуникаций. Экономьте время — закажите услугу сейчас.</p>
-                <a href="#calculator" class="btn btn--primary" @click="close()">Узнать подробнее</a>
-                <button class="upsell-popup__skip" @click="close()">Не сейчас</button>
-            </div>
-        </div>
-
         <!-- ===== FORM SECTION (hidden anchor) ===== -->
         <div id="form" style="scroll-margin-top: 80px;"></div>
 
@@ -2015,31 +1933,9 @@
                 }
             }));
 
-            // ----- UPSELL POPUP -----
-            Alpine.data('upsellApp', () => ({
-                visible: false,
-                init() {
-                    const closed = localStorage.getItem('upsell_closed');
-                    if (!closed) {
-                        setTimeout(() => {
-                            this.visible = true;
-                        }, 3000);
-                    }
-                },
-                close() {
-                    this.visible = false;
-                    localStorage.setItem('upsell_closed', 'true');
-                }
-            }));
-
         });
 
-        window.showUpsell = () => {
-            const popup = document.querySelector('[x-data="upsellApp()"]');
-            if (popup && popup.__x) {
-                popup.__x.$data.visible = true;
-            }
-        };
+        // Удалена функция showUpsell, т.к. окна больше нет
     </script>
 
     <!-- ===== Schema.org ===== -->
