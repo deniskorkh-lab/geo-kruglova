@@ -108,39 +108,5 @@
         </div>
     </footer>
 
-    <!-- AI WIDGET -->
-    <div class="ai-widget" x-data="aiAssistant()" x-init="init()">
-        <button class="ai-widget__toggle" @click="toggle()" :class="{ 'ai-widget__toggle--active': open }">
-            <span x-show="!open">✦</span>
-            <span x-show="open">✕</span>
-        </button>
-        <div class="ai-widget__body" x-show="open" x-transition>
-            <div class="ai-widget__header">
-                <span class="ai-widget__avatar">🧑‍💻</span>
-                <div>
-                    <strong>Гео-Консультант</strong>
-                    <span class="ai-widget__status">онлайн</span>
-                </div>
-                <button class="ai-widget__close" @click="open = false">✕</button>
-            </div>
-            <div class="ai-widget__messages" x-ref="messages">
-                <template x-for="msg in messages" :key="msg.id">
-                    <div class="ai-widget__msg" :class="msg.role">
-                        <span x-text="msg.text"></span>
-                        <small x-text="msg.time" class="ai-widget__time"></small>
-                    </div>
-                </template>
-            </div>
-            <div class="ai-widget__input">
-                <input type="text" x-model="inputText" placeholder="Напишите ваш вопрос..." @keydown.enter="sendMessage()" />
-                <button @click="sendMessage()">→</button>
-            </div>
-            <div class="ai-widget__footer">
-                <button class="ai-widget__human-btn" @click="callHuman()">Позвать инженера</button>
-                <button class="ai-widget__whatsapp-btn" @click="callHuman()">Спросить в WhatsApp</button>
-            </div>
-        </div>
-    </div>
-
 </body>
 </html>
