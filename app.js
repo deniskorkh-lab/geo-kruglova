@@ -24,9 +24,9 @@ document.addEventListener('alpine:init', () => {
         }
     }));
 
-    // ----- AI CHAT (для модального окна) -----
+    // ----- AI CHAT (МОДАЛЬНОЕ ОКНО – ЗАКРЫТО ПО УМОЛЧАНИЮ) -----
     Alpine.data('aiChat', () => ({
-        open: false,
+        open: false, // ВАЖНО: false – окно закрыто при загрузке
         inputText: '',
         messages: [],
         init() {
@@ -40,17 +40,35 @@ document.addEventListener('alpine:init', () => {
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && this.open) {
                     this.open = false;
+                    document.body.style.overflow = '';
+                }
+            });
+            // Закрытие при клике на фон
+            document.addEventListener('click', (e) => {
+                if (this.open && e.target.closest('.ai-modal') && !e.target.closest('.ai-modal__body')) {
+                    this.close();
                 }
             });
         },
         toggle() {
             this.open = !this.open;
             if (this.open) {
+                document.body.style.overflow = 'hidden';
                 this.$nextTick(() => {
                     const input = document.querySelector('.ai-modal__input input');
                     if (input) input.focus();
                 });
+            } else {
+                document.body.style.overflow = '';
             }
+        },
+        openChat() {
+            this.open = true;
+            document.body.style.overflow = 'hidden';
+            this.$nextTick(() => {
+                const input = document.querySelector('.ai-modal__input input');
+                if (input) input.focus();
+            });
         },
         sendMessage() {
             const text = this.inputText.trim();
@@ -128,6 +146,7 @@ document.addEventListener('alpine:init', () => {
         },
         close() {
             this.open = false;
+            document.body.style.overflow = '';
         }
     }));
 
