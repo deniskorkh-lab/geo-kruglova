@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Статус заказа — Кадастровый инженер</title>
+    <meta name="description" content="Отслеживание статуса заказа на межевание." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+    <script defer src="app.js"></script>
+    <style>
+        /* Дополнительные стили для трекера */
+        .tracker {
+            padding: 3rem 0;
+        }
+        .tracker__header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .tracker__order-id {
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+        .tracker__order-id strong {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+        }
+        .tracker__search {
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .tracker__search input {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            border: 1px solid #dde2e8;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .tracker__search button {
+            padding: 0.6rem 1.5rem;
+        }
+
+        /* Таймлайн */
+        .timeline {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 1rem 0;
+        }
+        .timeline__item {
+            display: flex;
+            gap: 1.5rem;
+            padding-bottom: 1.5rem;
+            position: relative;
+        }
+        .timeline__item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 16px;
+            top: 32px;
+            bottom: 0;
+            width: 2px;
+            background: #dde2e8;
+        }
+        .timeline__item--done .timeline__line {
+            background: var(--secondary-color);
+        }
+        .timeline__item--done .timeline__dot {
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 4px rgba(247, 147, 30, 0.2);
+        }
+        .timeline__item--active .timeline__dot {
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(247, 147, 30, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(247, 147, 30, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(247, 147, 30, 0); }
+        }
+        .timeline__dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 3px solid #dde2e8;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+        .timeline__content {
+            flex: 1;
+            padding-top: 2px;
+        }
+        .timeline__title {
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin-bottom: 0.2rem;
+        }
+        .timeline__meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        .timeline__meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .timeline__link {
+            color: var(--primary-color);
+            font-weight: 500;
+            text-decoration: underline;
+            font-size: 0.85rem;
+            margin-top: 0.2rem;
+            display: inline-block;
+        }
+        .timeline__link:hover {
+            color: var(--secondary-color);
+        }
+
+        .tracker__map {
+            max-width: 700px;
+            margin: 2rem auto 0;
+            background: #e9ecef;
+            border-radius: var(--radius);
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        .tracker__map a {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .timeline__item {
+                gap: 1rem;
+            }
+            .timeline__meta {
+                flex-direction: column;
+                gap: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER (упрощённый, но с навигацией) ===== -->
+    <header class="header" x-data="{ mobileOpen: false }">
+        <div class="container header__inner">
+            <a href="index.html" class="logo">
+                <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                    <circle cx="22" cy="22" r="20" stroke="#00579c" stroke-width="2.5" />
+                    <path d="M13 22L19 28L31 16" stroke="#f7931e" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <circle cx="22" cy="22" r="5" fill="#00579c" />
+                </svg>
+                <span class="logo__text">Гео<span>Круглова</span></span>
+            </a>
+
+            <nav class="nav" :class="{ 'nav--open': mobileOpen }">
+                <ul class="nav__list">
+                    <li><a href="services.html">Услуги</a></li>
+                    <li><a href="calculator.html">Калькулятор</a></li>
+                    <li><a href="faq.html">Вопросы</a></li>
+                    <li><a href="contacts.html">Контакты</a></li>
+                </ul>
+                <div class="nav__actions">
+                    <a href="calculator.html" class="btn btn--secondary btn--sm">Рассчитать</a>
+                    <a href="tracker.html" class="btn btn--outline btn--sm">Статус заказа</a>
+                </div>
+            </nav>
+
+            <div class="header__contacts">
+                <a href="tel:+79263484703" class="header__phone">+7 (926) 348-47-03</a>
+                <div class="header__messengers">
+                    <a href="https://wa.me/79263484703" target="_blank" aria-label="WhatsApp">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    </a>
+                    <a href="tg://resolve?domain=kruglova_geo" target="_blank" aria-label="Telegram">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </a>
+                </div>
+                <button class="header__burger" @click="mobileOpen = !mobileOpen" aria-label="Меню">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+        <section class="tracker" x-data="trackerApp()" x-init="init()">
+            <div class="container">
+                <div class="tracker__header">
+                    <h1 class="section-title">Статус заказа</h1>
+                    <p class="tracker__order-id">
+                        Заказ № <strong x-text="orderId"></strong>
+                    </p>
+                </div>
+
+                <!-- Форма поиска -->
+                <div class="tracker__search">
+                    <input type="text" x-model="inputId" placeholder="Введите номер заказа (например, 12345)" />
+                    <button class="btn btn--primary" @click="search()">Найти</button>
+                </div>
+
+                <!-- Таймлайн -->
+                <div class="timeline">
+                    <template x-for="(step, index) in steps" :key="index">
+                        <div class="timeline__item" :class="{ 
+                            'timeline__item--done': step.status === 'done', 
+                            'timeline__item--active': step.status === 'active' 
+                        }">
+                            <div class="timeline__dot" x-text="index + 1"></div>
+                            <div class="timeline__content">
+                                <div class="timeline__title" x-text="step.title"></div>
+                                <div class="timeline__meta">
+                                    <span x-show="step.date">📅 <span x-text="step.date"></span></span>
+                                    <span x-show="step.manager">👤 <span x-text="step.manager"></span></span>
+                                </div>
+                                <a x-show="step.link" :href="step.link" target="_blank" class="timeline__link" x-text="'Проверить в Росреестре →'"></a>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Карта (заглушка) -->
+                <div class="tracker__map">
+                    <span>📍 Местоположение инженера: <a href="#" @click.prevent="alert('Здесь будет ссылка на сервис мониторинга авто или статичная карта')">отследить на карте</a></span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__brand">
+                    <a href="index.html" class="logo">
+                        <svg width="32" height="32" viewBox="0 0 44 44" fill="none">
+                            <circle cx="22" cy="22" r="20" stroke="#f7931e" stroke-width="2.5" />
+                            <path d="M13 22L19 28L31 16" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="22" cy="22" r="5" fill="#f7931e" />
+                        </svg>
+                        <span class="logo__text">Гео<span>Круглова</span></span>
+                    </a>
+                    <p>Кадастровый инженер. Точные границы вашего спокойствия.</p>
+                </div>
+                <div class="footer__contacts">
+                    <h4>Контакты</h4>
+                    <a href="tel:+79263484703">+7 (926) 348-47-03</a>
+                    <a href="mailto:kroshaenot@mail.ru">kroshaenot@mail.ru</a>
+                    <p>г. Москва, ул. Тверская, д. 18</p>
+                    <p>ИП Круглова Е.А. ОГРНИП 1234567890123</p>
+                </div>
+                <div class="footer__links">
+                    <h4>Навигация</h4>
+                    <a href="services.html">Услуги</a>
+                    <a href="calculator.html">Калькулятор</a>
+                    <a href="faq.html">Вопросы</a>
+                    <a href="contacts.html">Контакты</a>
+                </div>
+                <div class="footer__policy">
+                    <a href="#" class="footer__policy-link">Политика конфиденциальности</a>
+                    <p>© 2026 Гео-Круглова. Все права защищены.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== AI WIDGET (опционально, но можно оставить) ===== -->
+    <div class="ai-widget" x-data="aiAssistant()" x-init="init()">
+        <button class="ai-widget__toggle" @click="toggle()" :class="{ 'ai-widget__toggle--active': open }">
+            <span x-show="!open">💬</span>
+            <span x-show="open">✕</span>
+        </button>
+        <div class="ai-widget__body" x-show="open" x-transition>
+            <div class="ai-widget__header">
+                <span class="ai-widget__avatar">🧑‍💻</span>
+                <div>
+                    <strong>Гео-Консультант</strong>
+                    <span class="ai-widget__status">онлайн</span>
+                </div>
+                <button class="ai-widget__close" @click="open = false">✕</button>
+            </div>
+            <div class="ai-widget__messages" x-ref="messages">
+                <template x-for="msg in messages" :key="msg.id">
+                    <div class="ai-widget__msg" :class="msg.role">
+                        <span x-text="msg.text"></span>
+                        <small x-text="msg.time" class="ai-widget__time"></small>
+                    </div>
+                </template>
+            </div>
+            <div class="ai-widget__input">
+                <input type="text" x-model="inputText" placeholder="Напишите ваш вопрос..." @keydown.enter="sendMessage()" />
+                <button @click="sendMessage()">→</button>
+            </div>
+            <div class="ai-widget__footer">
+                <button class="ai-widget__human-btn" @click="callHuman()">📞 Позвать живого инженера</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ДОПОЛНИТЕЛЬНЫЙ JS ДЛЯ ТРЕКЕРА ===== -->
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('trackerApp', () => ({
+                orderId: '12345',
+                inputId: '',
+                steps: [],
+                init() {
+                    // Получаем ID из URL (параметр ?id=)
+                    const params = new URLSearchParams(window.location.search);
+                    const id = params.get('id');
+                    if (id) {
+                        this.orderId = id;
+                    }
+                    this.inputId = this.orderId;
+                    this.updateSteps(this.orderId);
+                },
+                search() {
+                    if (this.inputId.trim()) {
+                        this.orderId = this.inputId.trim();
+                        this.updateSteps(this.orderId);
+                        // Обновляем URL без перезагрузки (опционально)
+                        const url = new URL(window.location);
+                        url.searchParams.set('id', this.orderId);
+                        window.history.pushState({}, '', url);
+                    }
+                },
+                updateSteps(orderId) {
+                    // Демо-данные – в реальности здесь был бы запрос к API
+                    // Для примера используем моковые данные с разными статусами
+                    const baseSteps = [
+                        { title: 'Заявка принята', date: '2026-08-10', manager: 'Менеджер Анна' },
+                        { title: 'Анализ документов', date: '2026-08-12', manager: 'Инженер Дмитрий' },
+                        { title: 'Выезд на участок', date: '2026-08-14', manager: 'Геодезист Игорь' },
+                        { title: 'Подготовка межевого плана', date: '2026-08-17', manager: 'Инженер Дмитрий' },
+                        { title: 'Подача в Росреестр', date: '2026-08-20', manager: 'Менеджер Анна' },
+                        { title: 'Регистрация завершена', date: '2026-08-25', manager: 'Менеджер Анна' }
+                    ];
+
+                    // Определяем, какие этапы выполнены, активны, ещё нет
+                    // Для демонстрации используем порядковый номер заказа для вариации
+                    const statusMap = {
+                        '12345': { done: 4, active: 5 },
+                        '67890': { done: 2, active: 3 },
+                        '11111': { done: 0, active: 1 },
+                        '99999': { done: 5, active: null } // всё завершено
+                    };
+
+                    // Если ID нет в карте, используем первые два этапа как выполненные
+                    const status = statusMap[orderId] || { done: 2, active: 3 };
+
+                    this.steps = baseSteps.map((step, index) => {
+                        let statusType = 'pending';
+                        if (status.done !== undefined && index < status.done) statusType = 'done';
+                        else if (status.active !== null && index === status.active) statusType = 'active';
+                        else if (status.done === 5) statusType = 'done'; // все выполнены
+                        return {
+                            ...step,
+                            status: statusType,
+                            // Добавляем ссылку для этапа "Подача в Росреестр" (индекс 4)
+                            link: (index === 4 && statusType !== 'pending') ? 'https://rosreestr.gov.ru/' : null
+                        };
+                    });
+                }
+            }));
+        });
+    </script>
+
+</body>
+</html>

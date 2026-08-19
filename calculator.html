@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Кадастровый инженер — Межевание за 7 дней</title>
-    <meta name="description" content="Кадастровый инженер. Межевание земельных участков, подготовка техпланов, регистрация в Росреестре. Гарантия постановки на учет." />
+    <title>Калькулятор стоимости межевания</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -14,7 +13,7 @@
 </head>
 <body>
 
-    <!-- HEADER -->
+    <!-- HEADER (такой же) -->
     <header class="header" x-data="{ mobileOpen: false }">
         <div class="container header__inner">
             <a href="index.html" class="logo">
@@ -25,7 +24,6 @@
                 </svg>
                 <span class="logo__text">Гео<span>Круглова</span></span>
             </a>
-
             <nav class="nav" :class="{ 'nav--open': mobileOpen }">
                 <ul class="nav__list">
                     <li><a href="services.html">Услуги</a></li>
@@ -38,7 +36,6 @@
                     <a href="tracker.html" class="btn btn--outline btn--sm">Статус заказа</a>
                 </div>
             </nav>
-
             <div class="header__contacts">
                 <a href="tel:+79263484703" class="header__phone">+7 (926) 348-47-03</a>
                 <div class="header__messengers">
@@ -57,131 +54,79 @@
     </header>
 
     <main>
-
-        <!-- HERO -->
-        <section class="hero">
-            <div class="container hero__inner">
-                <div class="hero__content">
-                    <span class="hero__badge">⭐ Работаем по всей России</span>
-                    <h1 class="hero__title">
-                        Кадастровый инженер.<br />
-                        <span class="hero__highlight">Межевание за 7 дней.</span><br />
-                        Гарантия постановки на учет
-                    </h1>
-                    <p class="hero__sub">Точные границы вашего спокойствия. Работаем с ИЖС, ЛПХ, коммерцией и девелоперами.</p>
-                    <div class="hero__actions">
-                        <a href="calculator.html" class="btn btn--primary btn--lg">Узнать цену за 1 минуту</a>
-                        <a href="services.html" class="btn btn--ghost btn--lg">Все услуги →</a>
-                    </div>
-                    <div class="hero__stats">
-                        <div><span>500+</span> участков</div>
-                        <div><span>99%</span> без отказов</div>
-                        <div><span>7 дней</span> средний срок</div>
-                    </div>
-                </div>
-                <div class="hero__visual">
-                    <div class="hero__image-wrapper">
-                        <img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22%3E%3Crect fill=%22%23e8edf2%22 width=%22400%22 height=%22300%22/%3E%3Ccircle cx=%22200%22 cy=%22150%22 r=%22100%22 fill=%22%23cbd5e1%22/%3E%3C/svg%3E" alt="Кадастровый инженер на объекте" loading="lazy" class="hero__image" />
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PAIN POINTS -->
-        <section class="pain-points">
+        <section class="calculator" x-data="calculatorApp()" x-init="init()">
             <div class="container">
-                <h2 class="section-title">Знакомые проблемы?</h2>
-                <p class="section-subtitle">Мы знаем, как вы переживаете. Вот 3 главных страха, которые мы устраняем.</p>
-                <div class="pain-grid">
-                    <div class="pain-card">
-                        <div class="pain-card__icon">⏳</div>
-                        <h3>Затягивают сроки</h3>
-                        <p>Межевание длится месяцами, а вы теряете время и нервы. У нас — 7 дней на выезд и подготовку документов.</p>
-                    </div>
-                    <div class="pain-card">
-                        <div class="pain-card__icon">🚫</div>
-                        <h3>Росреестр выдал отказ</h3>
-                        <p>Ошибки в документах — частая причина приостановок. Мы проверяем всё до подачи, гарантируем регистрацию.</p>
-                    </div>
-                    <div class="pain-card">
-                        <div class="pain-card__icon">📐</div>
-                        <h3>Двойные границы</h3>
-                        <p>Сосед захватил вашу землю? Проведём точную геодезию, составим акт согласования и отстоим ваши метры.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <h2 class="section-title">Калькулятор стоимости</h2>
+                <p class="section-subtitle">Узнайте цену за 1 минуту</p>
 
-        <!-- PROCESS -->
-        <section class="process">
-            <div class="container">
-                <h2 class="section-title">Как мы работаем</h2>
-                <p class="section-subtitle">5 шагов к чистой регистрации</p>
-                <div class="process-timeline">
-                    <div class="process-step">
-                        <span class="process-step__num">1</span>
-                        <h3>Заявка</h3>
-                        <p>Вы оставляете заявку — мы связываемся в течение 15 минут.</p>
-                    </div>
-                    <div class="process-step">
-                        <span class="process-step__num">2</span>
-                        <h3>Анализ</h3>
-                        <p>Проверяем документы, смотрим выписку ЕГРН, оцениваем сложность.</p>
-                    </div>
-                    <div class="process-step">
-                        <span class="process-step__num">3</span>
-                        <h3>Выезд</h3>
-                        <p>Инженер выезжает на участок, выполняет геодезические измерения.</p>
-                    </div>
-                    <div class="process-step">
-                        <span class="process-step__num">4</span>
-                        <h3>Подготовка</h3>
-                        <p>Составляем межевой план, согласовываем с соседями, проверяем.</p>
-                    </div>
-                    <div class="process-step">
-                        <span class="process-step__num">5</span>
-                        <h3>Регистрация</h3>
-                        <p>Подаём документы в Росреестр, отслеживаем статус до результата.</p>
-                    </div>
-                </div>
-                <div class="process__cta">
-                    <a href="calculator.html" class="btn btn--primary btn--lg">Рассчитать стоимость →</a>
-                </div>
-            </div>
-        </section>
+                <div class="calculator__grid">
+                    <div class="calculator__form">
+                        <div class="form-group">
+                            <label>Тип объекта</label>
+                            <select x-model="objectType" @change="calculate()">
+                                <option value="izhs">ИЖС</option>
+                                <option value="lph">ЛПХ</option>
+                                <option value="commercial">Коммерция</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Площадь (соток)</label>
+                            <input type="number" x-model="area" min="1" @input="calculate()" />
+                        </div>
+                        <div class="form-group">
+                            <label>Удаленность от города</label>
+                            <select x-model="distance" @change="calculate()">
+                                <option value="0">до 30 км</option>
+                                <option value="1">более 30 км (+20%)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Сложность конфигурации</label>
+                            <select x-model="complexity" @change="calculate()">
+                                <option value="0">Стандартная</option>
+                                <option value="1">Сложная (+15%)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Срочность</label>
+                            <select x-model="urgency" @change="calculate()">
+                                <option value="0">Обычный срок</option>
+                                <option value="1">Срочно (+25%)</option>
+                            </select>
+                        </div>
 
-        <!-- REVIEWS -->
-        <section class="reviews" x-data="reviewsCarousel()">
-            <div class="container">
-                <h2 class="section-title">Отзывы</h2>
-                <p class="section-subtitle">Реальные люди — реальные результаты</p>
-                <div class="reviews__carousel">
-                    <div class="reviews__track" x-ref="track">
-                        <template x-for="(review, i) in reviews" :key="i">
-                            <div class="review-card">
-                                <div class="review-card__stars" x-html="'⭐'.repeat(review.stars)"></div>
-                                <p class="review-card__text" x-text="review.text"></p>
-                                <div class="review-card__author">
-                                    <span class="review-card__name" x-text="review.name"></span>
-                                    <span class="review-card__source" x-text="review.source"></span>
-                                </div>
+                        <div class="calculator__result" x-show="result > 0">
+                            <span class="calculator__result-label">Предварительная стоимость:</span>
+                            <span class="calculator__result-value" x-text="result + ' ₽'"></span>
+                            <p class="calculator__result-note">* Окончательная цена зависит от выезда и документов</p>
+                        </div>
+                    </div>
+
+                    <div class="calculator__info">
+                        <div class="guarantee-badge">
+                            <span class="guarantee-badge__icon">🛡️</span>
+                            <div>
+                                <strong>Гарантия регистрации</strong>
+                                <p>Финансовая ответственность за приостановки со стороны Росреестра. Если отказ — возвращаем деньги.</p>
                             </div>
-                        </template>
+                        </div>
+
+                        <div class="time-savings">
+                            <h4>Сколько времени вы экономите?</h4>
+                            <input type="range" min="1" max="10" value="5" x-model="savingsDays" />
+                            <p>Вы экономите <strong x-text="savingsDays + ' рабочих дней'"></strong> по сравнению с самостоятельным оформлением</p>
+                            <p class="time-savings__value">≈ <span x-text="savingsDays * 3000 + ' ₽'"></span> вашего времени*</p>
+                            <small>* Исходя из стоимости рабочего дня 3 000 ₽</small>
+                        </div>
+
+                        <div class="calculator__cta">
+                            <a href="contacts.html" class="btn btn--primary btn--lg">Оставить заявку</a>
+                            <p class="calculator__cta-note">📄 Пришлём памятку PDF и проверим ограничения зоны через API ПЗЗ</p>
+                        </div>
                     </div>
-                    <button class="reviews__arrow reviews__arrow--prev" @click="prev()">‹</button>
-                    <button class="reviews__arrow reviews__arrow--next" @click="next()">›</button>
-                </div>
-                <div class="reviews__dots">
-                    <template x-for="(_, i) in reviews" :key="i">
-                        <span class="reviews__dot" :class="{ 'reviews__dot--active': i === current }" @click="goTo(i)"></span>
-                    </template>
-                </div>
-                <div class="reviews__cta">
-                    <a href="https://yandex.ru/maps/org/" target="_blank" class="btn btn--outline">Читать все на Яндекс.Картах →</a>
                 </div>
             </div>
         </section>
-
     </main>
 
     <!-- FOOTER -->

@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Кадастровый инженер — Межевание за 7 дней</title>
-    <meta name="description" content="Кадастровый инженер. Межевание земельных участков, подготовка техпланов, регистрация в Росреестре. Гарантия постановки на учет." />
+    <title>Услуги кадастрового инженера</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -14,7 +13,7 @@
 </head>
 <body>
 
-    <!-- HEADER -->
+    <!-- HEADER (такой же, как на главной) -->
     <header class="header" x-data="{ mobileOpen: false }">
         <div class="container header__inner">
             <a href="index.html" class="logo">
@@ -25,7 +24,6 @@
                 </svg>
                 <span class="logo__text">Гео<span>Круглова</span></span>
             </a>
-
             <nav class="nav" :class="{ 'nav--open': mobileOpen }">
                 <ul class="nav__list">
                     <li><a href="services.html">Услуги</a></li>
@@ -38,7 +36,6 @@
                     <a href="tracker.html" class="btn btn--outline btn--sm">Статус заказа</a>
                 </div>
             </nav>
-
             <div class="header__contacts">
                 <a href="tel:+79263484703" class="header__phone">+7 (926) 348-47-03</a>
                 <div class="header__messengers">
@@ -57,134 +54,121 @@
     </header>
 
     <main>
-
-        <!-- HERO -->
-        <section class="hero">
-            <div class="container hero__inner">
-                <div class="hero__content">
-                    <span class="hero__badge">⭐ Работаем по всей России</span>
-                    <h1 class="hero__title">
-                        Кадастровый инженер.<br />
-                        <span class="hero__highlight">Межевание за 7 дней.</span><br />
-                        Гарантия постановки на учет
-                    </h1>
-                    <p class="hero__sub">Точные границы вашего спокойствия. Работаем с ИЖС, ЛПХ, коммерцией и девелоперами.</p>
-                    <div class="hero__actions">
-                        <a href="calculator.html" class="btn btn--primary btn--lg">Узнать цену за 1 минуту</a>
-                        <a href="services.html" class="btn btn--ghost btn--lg">Все услуги →</a>
-                    </div>
-                    <div class="hero__stats">
-                        <div><span>500+</span> участков</div>
-                        <div><span>99%</span> без отказов</div>
-                        <div><span>7 дней</span> средний срок</div>
-                    </div>
-                </div>
-                <div class="hero__visual">
-                    <div class="hero__image-wrapper">
-                        <img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22%3E%3Crect fill=%22%23e8edf2%22 width=%22400%22 height=%22300%22/%3E%3Ccircle cx=%22200%22 cy=%22150%22 r=%22100%22 fill=%22%23cbd5e1%22/%3E%3C/svg%3E" alt="Кадастровый инженер на объекте" loading="lazy" class="hero__image" />
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PAIN POINTS -->
-        <section class="pain-points">
+        <section class="services" x-data="{ tab: 'b2c' }">
             <div class="container">
-                <h2 class="section-title">Знакомые проблемы?</h2>
-                <p class="section-subtitle">Мы знаем, как вы переживаете. Вот 3 главных страха, которые мы устраняем.</p>
-                <div class="pain-grid">
-                    <div class="pain-card">
-                        <div class="pain-card__icon">⏳</div>
-                        <h3>Затягивают сроки</h3>
-                        <p>Межевание длится месяцами, а вы теряете время и нервы. У нас — 7 дней на выезд и подготовку документов.</p>
+                <h2 class="section-title">Все услуги</h2>
+                <p class="section-subtitle">Выберите ваш профиль</p>
+
+                <div class="tabs">
+                    <button class="tab-btn" :class="{ 'tab-btn--active': tab === 'b2c' }" @click="tab = 'b2c'">Частным лицам</button>
+                    <button class="tab-btn" :class="{ 'tab-btn--active': tab === 'b2b' }" @click="tab = 'b2b'">Бизнесу</button>
+                </div>
+
+                <!-- B2C -->
+                <div class="tab-content" x-show="tab === 'b2c'" x-transition>
+                    <div class="service-grid">
+                        <div class="service-card">
+                            <div class="service-card__icon">🏡</div>
+                            <h3>Межевание ИЖС</h3>
+                            <p>Установление границ участка под индивидуальное жилищное строительство. Выезд, согласование с соседями, постановка на кадастр.</p>
+                            <span class="service-card__price">от 10 000 ₽</span>
+                            <a href="calculator.html" class="btn btn--secondary btn--sm">Рассчитать</a>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-card__icon">🌾</div>
+                            <h3>Межевание ЛПХ</h3>
+                            <p>Для личных подсобных хозяйств — оформление участков под сад, огород или дачу. Быстро, без лишней бюрократии.</p>
+                            <span class="service-card__price">от 10 000 ₽</span>
+                            <a href="calculator.html" class="btn btn--secondary btn--sm">Рассчитать</a>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-card__icon">🏢</div>
+                            <h3>Техплан на дом / гараж</h3>
+                            <p>Подготовка технического плана для постановки на кадастровый учёт жилых и нежилых объектов. Для наследства, продажи и ипотеки.</p>
+                            <span class="service-card__price">от 10 000 ₽</span>
+                            <a href="calculator.html" class="btn btn--secondary btn--sm">Рассчитать</a>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-card__icon">⚖️</div>
+                            <h3>Исправление реестровых ошибок</h3>
+                            <p>Ошибки в ЕГРН? Исправим неточности в описании местоположения, площади и координатах. С гарантией.</p>
+                            <span class="service-card__price">от 15 000 ₽</span>
+                            <a href="calculator.html" class="btn btn--secondary btn--sm">Рассчитать</a>
+                        </div>
                     </div>
-                    <div class="pain-card">
-                        <div class="pain-card__icon">🚫</div>
-                        <h3>Росреестр выдал отказ</h3>
-                        <p>Ошибки в документах — частая причина приостановок. Мы проверяем всё до подачи, гарантируем регистрацию.</p>
-                    </div>
-                    <div class="pain-card">
-                        <div class="pain-card__icon">📐</div>
-                        <h3>Двойные границы</h3>
-                        <p>Сосед захватил вашу землю? Проведём точную геодезию, составим акт согласования и отстоим ваши метры.</p>
+                </div>
+
+                <!-- B2B -->
+                <div class="tab-content" x-show="tab === 'b2b'" x-transition>
+                    <div class="b2b-table-wrapper">
+                        <table class="b2b-table">
+                            <thead>
+                                <tr>
+                                    <th>Услуга</th>
+                                    <th>Цена за гектар</th>
+                                    <th>Скидка от 10 га</th>
+                                    <th>SLA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Межевание квартала</strong></td>
+                                    <td>от 6 500 ₽</td>
+                                    <td>−15%</td>
+                                    <td>15 дней</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Исправление реестровых ошибок в ЖК</strong></td>
+                                    <td>от 9 000 ₽</td>
+                                    <td>−10%</td>
+                                    <td>21 день</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Сопровождение сделок</strong></td>
+                                    <td>от 4 000 ₽</td>
+                                    <td>−20%</td>
+                                    <td>3 дня</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Вынос точек в натуру</strong></td>
+                                    <td>от 4 000 ₽</td>
+                                    <td>−12%</td>
+                                    <td>2 дня</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="b2b-note">* Цены указаны для объёмов от 5 объектов. Индивидуальный расчёт — по запросу.</p>
+                        <a href="calculator.html" class="btn btn--primary">Получить коммерческое предложение</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- PROCESS -->
-        <section class="process">
+        <!-- DISPUTE -->
+        <section class="dispute">
             <div class="container">
-                <h2 class="section-title">Как мы работаем</h2>
-                <p class="section-subtitle">5 шагов к чистой регистрации</p>
-                <div class="process-timeline">
-                    <div class="process-step">
-                        <span class="process-step__num">1</span>
-                        <h3>Заявка</h3>
-                        <p>Вы оставляете заявку — мы связываемся в течение 15 минут.</p>
+                <div class="dispute__inner">
+                    <div class="dispute__content">
+                        <span class="dispute__badge">⚖️ Экспертиза</span>
+                        <h2>Решаем земельные споры</h2>
+                        <p>Вынос точек в натуру, досудебные претензии, согласование границ. Мы помогаем отстоять ваши метры в суде и досудебном порядке.</p>
+                        <ul>
+                            <li>📍 Вынос границ участка в натуру</li>
+                            <li>📋 Составление акта согласования</li>
+                            <li>⚖️ Подготовка для суда</li>
+                            <li>🤝 Досудебное урегулирование</li>
+                        </ul>
+                        <a href="calculator.html" class="btn btn--primary">Получить консультацию</a>
                     </div>
-                    <div class="process-step">
-                        <span class="process-step__num">2</span>
-                        <h3>Анализ</h3>
-                        <p>Проверяем документы, смотрим выписку ЕГРН, оцениваем сложность.</p>
+                    <div class="dispute__visual">
+                        <img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 200%22%3E%3Crect fill=%22%23e8edf2%22 width=%22300%22 height=%22200%22/%3E%3Cpath d=%22M50 100 L250 100 M150 50 L150 150%22 stroke=%22%2300579c%22 stroke-width=%224%22/%3E%3Ccircle cx=%22150%22 cy=%22100%22 r=%226%22 fill=%22%23f7931e%22/%3E%3C/svg%3E" alt="Вынос точек в натуру" loading="lazy" />
                     </div>
-                    <div class="process-step">
-                        <span class="process-step__num">3</span>
-                        <h3>Выезд</h3>
-                        <p>Инженер выезжает на участок, выполняет геодезические измерения.</p>
-                    </div>
-                    <div class="process-step">
-                        <span class="process-step__num">4</span>
-                        <h3>Подготовка</h3>
-                        <p>Составляем межевой план, согласовываем с соседями, проверяем.</p>
-                    </div>
-                    <div class="process-step">
-                        <span class="process-step__num">5</span>
-                        <h3>Регистрация</h3>
-                        <p>Подаём документы в Росреестр, отслеживаем статус до результата.</p>
-                    </div>
-                </div>
-                <div class="process__cta">
-                    <a href="calculator.html" class="btn btn--primary btn--lg">Рассчитать стоимость →</a>
                 </div>
             </div>
         </section>
-
-        <!-- REVIEWS -->
-        <section class="reviews" x-data="reviewsCarousel()">
-            <div class="container">
-                <h2 class="section-title">Отзывы</h2>
-                <p class="section-subtitle">Реальные люди — реальные результаты</p>
-                <div class="reviews__carousel">
-                    <div class="reviews__track" x-ref="track">
-                        <template x-for="(review, i) in reviews" :key="i">
-                            <div class="review-card">
-                                <div class="review-card__stars" x-html="'⭐'.repeat(review.stars)"></div>
-                                <p class="review-card__text" x-text="review.text"></p>
-                                <div class="review-card__author">
-                                    <span class="review-card__name" x-text="review.name"></span>
-                                    <span class="review-card__source" x-text="review.source"></span>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-                    <button class="reviews__arrow reviews__arrow--prev" @click="prev()">‹</button>
-                    <button class="reviews__arrow reviews__arrow--next" @click="next()">›</button>
-                </div>
-                <div class="reviews__dots">
-                    <template x-for="(_, i) in reviews" :key="i">
-                        <span class="reviews__dot" :class="{ 'reviews__dot--active': i === current }" @click="goTo(i)"></span>
-                    </template>
-                </div>
-                <div class="reviews__cta">
-                    <a href="https://yandex.ru/maps/org/" target="_blank" class="btn btn--outline">Читать все на Яндекс.Картах →</a>
-                </div>
-            </div>
-        </section>
-
     </main>
 
-    <!-- FOOTER -->
+    <!-- FOOTER (такой же) -->
     <footer class="footer">
         <div class="container">
             <div class="footer__grid">
