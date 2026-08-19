@@ -11,7 +11,6 @@ document.addEventListener('alpine:init', () => {
         result: 0,
         showPopup: false,
         popupResult: 0,
-        popupArea: 10,
         init() {
             this.calculate();
         },
@@ -26,18 +25,15 @@ document.addEventListener('alpine:init', () => {
             this.result = Math.round(total);
             this.popupResult = this.result;
         },
-        // Открыть попап с ценой
         openPopup() {
             this.calculate();
             this.showPopup = true;
-            this.popupArea = this.area;
             document.body.style.overflow = 'hidden';
         },
         closePopup() {
             this.showPopup = false;
             document.body.style.overflow = '';
         },
-        // Оставить заявку
         submitRequest() {
             this.closePopup();
             window.location.href = 'contacts.html';
