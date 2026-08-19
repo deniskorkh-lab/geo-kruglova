@@ -1,6 +1,6 @@
 document.addEventListener('alpine:init', () => {
 
-    // ----- CALCULATOR (с автозапуском) -----
+    // ----- CALCULATOR -----
     Alpine.data('calculatorApp', () => ({
         objectType: 'izhs',
         area: 10,
@@ -10,7 +10,7 @@ document.addEventListener('alpine:init', () => {
         savingsDays: 5,
         result: 0,
         init() {
-            this.calculate(); // показываем цену сразу при загрузке
+            this.calculate();
         },
         calculate() {
             let base = 0;
@@ -115,12 +115,36 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('reviewsCarousel', () => ({
         current: 0,
         reviews: [
-            { stars: 5, text: 'Отличная работа! Выехали на следующий день, всё сделали быстро. Росреестр зарегистрировал без проблем.',
-                name: 'Анна П.', source: 'Яндекс.Карты' },
-            { stars: 5, text: 'Сложный участок, соседи не хотели согласовывать. Инженер всё уладил, границы установили.',
-                name: 'Дмитрий К.', source: 'Яндекс.Карты' },
-            { stars: 5, text: 'Заказывали межевание для ИЖС. Получили техплан, подали в Росреестр – всё чётко. Рекомендую!',
-                name: 'Елена М.', source: 'Яндекс.Карты' }
+            {
+                stars: 5,
+                text: 'Заказывали межевание для участка 12 соток в СНТ «Берёзка». Соседи долго не соглашались, но инженер всё уладил. Росреестр зарегистрировал без проблем. Безупречная работа.',
+                name: 'Игорь В.',
+                source: 'Яндекс.Карты'
+            },
+            {
+                stars: 5,
+                text: 'Делали техплан на дом 85 м² в коттеджном посёлке «Лесной». Старые документы 1998 года — всё переделали, внесли правильные координаты. Теперь можно продавать.',
+                name: 'Ольга и Сергей К.',
+                source: 'Яндекс.Карты'
+            },
+            {
+                stars: 5,
+                text: 'Реестровая ошибка – участок на карте уехал на соседний. Подготовили новый межевой план, согласовали с администрацией – исправили. Профессионально и деликатно.',
+                name: 'Андрей М.',
+                source: 'Яндекс.Карты'
+            },
+            {
+                stars: 5,
+                text: 'Сопровождение сделки для бизнеса – земля под строительство магазина. Проверили обременения, зоны. Всё в срок, полный отчёт. Рекомендую.',
+                name: 'Алексей П.',
+                source: 'Яндекс.Карты'
+            },
+            {
+                stars: 5,
+                text: 'Межевание ЛПХ 15 соток в Дмитровском районе. Выехали быстро, замеры, подготовка плана. Росреестр одобрил с первого раза. Цена приятно удивила.',
+                name: 'Марина Л.',
+                source: 'Яндекс.Карты'
+            }
         ],
         goTo(index) {
             this.current = index;
@@ -192,4 +216,40 @@ document.addEventListener('alpine:init', () => {
         }
     }));
 
+});
+
+// ----- FADE-UP ON SCROLL (vanilla JS) -----
+document.addEventListener('DOMContentLoaded', () => {
+    // Preloader
+    const preloader = document.querySelector('.preloader');
+    if (preloader) {
+        setTimeout(() => {
+            preloader.classList.add('hidden');
+        }, 1500);
+    }
+
+    // Header scroll effect
+    const header = document.querySelector('.header');
+    window.addEventListener('scroll', () => {
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollY > 80) {
+            header.classList.add('header--scrolled');
+        } else {
+            header.classList.remove('header--scrolled');
+        }
+    });
+
+    // Fade-up observer
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-up-visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(el => {
+        el.classList.add('fade-up-init');
+        observer.observe(el);
+    });
 });
