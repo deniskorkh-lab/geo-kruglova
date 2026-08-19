@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Вопросы — Геометрия Кругловой</title>
+    <meta name="description" content="Часто задаваемые вопросы о межевании, кадастровых работах, регистрации прав." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -55,22 +56,135 @@
     </header>
 
     <main>
-        <section class="faq fade-up" style="padding-top: 7rem;" x-data="faqApp()">
+        <section class="faq fade-up" style="padding-top: 7rem;">
             <div class="container">
                 <h2 class="section-title">Часто задаваемые вопросы</h2>
                 <p class="section-subtitle">Ответы на самые важные вопросы о межевании и кадастре</p>
+                
                 <div class="faq__list">
-                    <template x-for="(item, i) in items" :key="i">
-                        <div class="faq__item">
-                            <button class="faq__question" @click="toggle(i)">
-                                <span x-text="item.q"></span>
-                                <span x-text="openIndex === i ? '−' : '+'"></span>
-                            </button>
-                            <div class="faq__answer" x-show="openIndex === i" x-transition>
-                                <p x-text="item.a"></p>
-                            </div>
+                    <!-- ===== БЛОК 1: ДЕНЬГИ, СРОКИ, ГАРАНТИИ ===== -->
+                    <div class="faq__item">
+                        <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                            <span>1. Сколько это стоит?</span>
+                            <span>+</span>
+                        </button>
+                        <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                            <p>Стоимость зависит от площади объекта, его удаленности от города и сложности конфигурации границ. Для участка 6 соток в черте города межевание обычно стоит от 10 000 до 15 000 рублей. Точную смету я смогу назвать только после проверки ваших документов на наличие обременений (арестов, зон ЛЭП). Пришлите скан выписки из ЕГРН через калькулятор на сайте — я отвечу за 5 минут.</p>
                         </div>
-                    </template>
+                    </div>
+
+                    <div class="faq__item">
+                        <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                            <span>2. Какие сроки выполнения?</span>
+                            <span>+</span>
+                        </button>
+                        <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                            <p>По закону срок рассмотрения документов в Росреестре составляет 7–10 рабочих дней. Мои работы (выезд геодезиста, подготовка чертежей) занимают еще 3–5 дней. В среднем «под ключ» процесс занимает 14–21 день. Если у вас горит сделка купли-продажи, возможна услуга ускоренной подачи по доверенности нотариуса.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item">
+                        <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                            <span>3. Даете ли вы гарантию постановки на учет?</span>
+                            <span>+</span>
+                        </button>
+                        <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                            <p>Да. Я работаю строго по требованиям Росреестра и состою в СРО. Если Росреестр выдает обоснованную приостановку по моей вине (ошибка в XML-схеме, неверные координаты), я исправляю документы бесплатно до победного конца. Это фиксируется в договоре.</p>
+                        </div>
+                    </div>
+
+                    <!-- ===== БЛОК 2: ДОКУМЕНТЫ И БЮРОКРАТИЯ ===== -->
+                    <div class="faq__item">
+                        <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                            <span>4. У меня есть старые документы (синяя книжка/розовое свидетельство 90-х годов). Этого хватит?</span>
+                            <span>+</span>
+                        </button>
+                        <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                            <p>Старые документы подтверждают ваше право владения, но не содержат точных координат GPS. Для продажи дома банку или оформления ипотеки их недостаточно. Мы проведем современное межевание, привяжем границы к спутнику и внесем актуальные данные в ЕГРН. Ваши старые документы станут основанием для новой записи.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item">
+                        <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                            <span>5. Нужно ли согласие соседей при межевании?</span>
+                            <span>+</span>
+                        </button>
+                        <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                            <p>Да, закон требует согласования смежных границ. Я подготовлю акт согласования, который соседи должны подписать лично или получить заказным письмом. Если сосед отказывается подписывать без причин или скрывается, мы имеем право подать объявление в местную газету — это юридически заменяет его подпись.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item">
+                        <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                            <span>6. Что делать, если забор стоит криво / сосед залез на мою территорию?</span>
+                            <span>+</span>
+                        </button>
+                        <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                            <p>Сначала нужно заказать вынос точек в натуру. Я приеду со спутниковым оборудованием и забью колышки именно там, где граница проходит по документам. Если выяснится реальный захват земли, сначала пробуем решить вопрос мирно (показываем соседу точки). Если нет — готовим досудебную претензию или иск об установлении границ.</p>
+                        </div>
+                    </div>
+
+                    <!-- ===== БЛОК 3: ПРОБЛЕМЫ И ОШИБКИ ===== -->
+                    <div class="faq__item">
+                        <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                            <span>7. Почему Росреестр прислал уведомление о приостановке?</span>
+                            <span>+</span>
+                        </button>
+                        <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                            <p>Приостановка — это не отказ, а просьба исправить недочеты. Чаще всего причины три: 1) Наложение границ на соседа (кто-то рядом уже отмежевался с ошибкой). 2) Отсутствие согласия заинтересованных лиц. 3) Несоответствие контура здания пятну застройки. Пришлите мне номер заявления из уведомления — я проанализирую причину и скажу стоимость исправления.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item">
+                        <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                            <span>8. На Публичной кадастровой карте мой участок уехал в реку / наложился на дорогу. Что делать?</span>
+                            <span>+</span>
+                        </button>
+                        <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                            <p>Это классическая реестровая ошибка. Она возникла из-за погрешностей старых приборов прошлых лет. Чтобы её убрать, нельзя просто стереть точку. Нужно подготовить новый межевой план, доказать математическую ошибку старых измерений и согласовать правильные координаты с администрацией (если затронуты дороги) или соседями.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item">
+                        <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                            <span>9. Можно ли исправить площадь участка без выезда инженера?</span>
+                            <span>+</span>
+                        </button>
+                        <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                            <p>Нет. Если ошибка касается координат («границы уехали»), выезд обязателен. Без полевых замеров современным прибором невозможно доказать Росреестру, что текущие цифры в базе ложные. Выезд необходим для защиты ваших интересов в суде цифровыми данными.</p>
+                        </div>
+                    </div>
+
+                    <!-- ===== БЛОК 4: СПЕЦИФИКА ОБЪЕКТОВ ===== -->
+                    <div class="faq__item">
+                        <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                            <span>10. Чем отличается технический план от межевого плана?</span>
+                            <span>+</span>
+                        </button>
+                        <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                            <p>Межевой план нужен для земли (участки, огороды, паи). Технический план нужен для строений (дома, квартиры, гаражи, бани). Если вы купили пустой участок — нужен межевой. Если построили дом на участке — нужен технический.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item">
+                        <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                            <span>11. Обязательно ли регистрировать сарай или баню?</span>
+                            <span>+</span>
+                        </button>
+                        <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                            <p>Если объект имеет фундамент (капитальный), его лучше зарегистрировать. Это защитит строение от признания самостроем, позволит застраховать его официально и включить в оценку имущества. Для регистрации потребуется технический план.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item">
+                        <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                            <span>12. Можно ли строить магазин на земле СНТ / ИЖС?</span>
+                            <span>+</span>
+                        </button>
+                        <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                            <p>Смотря какой вид разрешенного использования (ВРИ) указан в вашей выписке ЕГРН. На землях ИЖС можно строить только жилой дом. Коммерческая деятельность там запрещена штрафами КоАП РФ. Однако часто ВРИ можно изменить (например, добавить «Магазины») через администрацию муниципалитета. Я могу проверить ваши ПЗЗ (Правила землепользования) и сказать, возможно ли это.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -107,6 +221,24 @@
             </div>
         </div>
     </footer>
+
+    <!-- Дополнительный скрипт для работы аккордеона -->
+    <script>
+        // Делаем, чтобы при клике на вопрос он открывался/закрывался
+        document.querySelectorAll('.faq__question').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                const plus = this.querySelector('span:last-child');
+                if (answer.style.display === 'block') {
+                    answer.style.display = 'none';
+                    plus.textContent = '+';
+                } else {
+                    answer.style.display = 'block';
+                    plus.textContent = '−';
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
