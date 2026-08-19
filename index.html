@@ -63,7 +63,6 @@
             font-weight: 300;
             margin-top: 0.3rem;
         }
-        /* Фоновые изображения для объектов */
         .portfolio__item--1 { background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=400&fit=crop'); }
         .portfolio__item--2 { background-image: url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400&h=400&fit=crop'); }
         .portfolio__item--3 { background-image: url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=400&fit=crop'); }
@@ -231,7 +230,7 @@
         </div>
     </section>
 
-    <!-- PORTFOLIO (ОБНОВЛЁННЫЙ – с картинками) -->
+    <!-- PORTFOLIO -->
     <section class="portfolio fade-up">
         <div class="container">
             <h2 class="section-title">Объекты</h2>
@@ -253,7 +252,7 @@
         </div>
     </section>
 
-    <!-- REVIEWS (ОБНОВЛЁННЫЕ) -->
+    <!-- REVIEWS -->
     <section class="reviews fade-up" x-data="reviewsCarousel()">
         <div class="container">
             <h2 class="section-title">Отзывы</h2>
@@ -285,25 +284,69 @@
         </div>
     </section>
 
-    <!-- FAQ (первые 5 вопросов) -->
-    <section class="faq fade-up" x-data="faqApp()">
+    <!-- FAQ (первые 5 вопросов на главной) -->
+    <section class="faq fade-up">
         <div class="container">
             <h2 class="section-title">Часто задаваемые вопросы</h2>
             <p class="section-subtitle">Кратко о главном</p>
             <div class="faq__list">
-                <template x-for="(item, i) in items.slice(0,5)" :key="i">
-                    <div class="faq__item">
-                        <button class="faq__question" @click="toggle(i)">
-                            <span x-text="item.q"></span>
-                            <span x-text="openIndex === i ? '−' : '+'"></span>
-                        </button>
-                        <div class="faq__answer" x-show="openIndex === i" x-transition>
-                            <p x-text="item.a"></p>
-                        </div>
+                <!-- Вопрос 1 -->
+                <div class="faq__item">
+                    <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                        <span>Сколько это стоит?</span>
+                        <span>+</span>
+                    </button>
+                    <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                        <p>Стоимость зависит от площади объекта, его удаленности от города и сложности конфигурации границ. Для участка 6 соток в черте города межевание обычно стоит от 10 000 до 15 000 рублей. Точную смету я смогу назвать только после проверки ваших документов на наличие обременений (арестов, зон ЛЭП). Пришлите скан выписки из ЕГРН через калькулятор на сайте — я отвечу за 5 минут.</p>
                     </div>
-                </template>
+                </div>
+
+                <!-- Вопрос 2 -->
+                <div class="faq__item">
+                    <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                        <span>Какие сроки выполнения?</span>
+                        <span>+</span>
+                    </button>
+                    <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                        <p>По закону срок рассмотрения документов в Росреестре составляет 7–10 рабочих дней. Мои работы (выезд геодезиста, подготовка чертежей) занимают еще 3–5 дней. В среднем «под ключ» процесс занимает 14–21 день. Если у вас горит сделка купли-продажи, возможна услуга ускоренной подачи по доверенности нотариуса.</p>
+                    </div>
+                </div>
+
+                <!-- Вопрос 3 -->
+                <div class="faq__item">
+                    <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                        <span>Даете ли вы гарантию постановки на учет?</span>
+                        <span>+</span>
+                    </button>
+                    <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                        <p>Да. Я работаю строго по требованиям Росреестра и состою в СРО. Если Росреестр выдает обоснованную приостановку по моей вине (ошибка в XML-схеме, неверные координаты), я исправляю документы бесплатно до победного конца. Это фиксируется в договоре.</p>
+                    </div>
+                </div>
+
+                <!-- Вопрос 4 -->
+                <div class="faq__item">
+                    <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                        <span>Нужно ли согласие соседей при межевании?</span>
+                        <span>+</span>
+                    </button>
+                    <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                        <p>Да, закон требует согласования смежных границ. Я подготовлю акт согласования, который соседи должны подписать лично или получить заказным письмом. Если сосед отказывается подписывать без причин или скрывается, мы имеем право подать объявление в местную газету — это юридически заменяет его подпись.</p>
+                    </div>
+                </div>
+
+                <!-- Вопрос 5 -->
+                <div class="faq__item">
+                    <button class="faq__question" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('span:last-child').textContent = this.nextElementSibling.classList.contains('open') ? '−' : '+'">
+                        <span>Что делать, если забор стоит криво / сосед залез на мою территорию?</span>
+                        <span>+</span>
+                    </button>
+                    <div class="faq__answer" style="display: none; padding: 0 1.5rem 1.5rem; color: var(--text-muted); line-height: 1.7;">
+                        <p>Сначала нужно заказать вынос точек в натуру. Я приеду со спутниковым оборудованием и забью колышки именно там, где граница проходит по документам. Если выяснится реальный захват земли, сначала пробуем решить вопрос мирно (показываем соседу точки). Если нет — готовим досудебную претензию или иск об установлении границ.</p>
+                    </div>
+                </div>
+
                 <div style="text-align: center; margin-top: 2rem;">
-                    <a href="faq.html" class="btn btn--ghost">Смотреть все 12 вопросов</a>
+                    <a href="faq.html" class="btn btn--ghost">Смотреть все 12 вопросов →</a>
                 </div>
             </div>
         </div>
@@ -365,6 +408,23 @@
             </div>
         </div>
     </footer>
+
+    <!-- Script для аккордеона -->
+    <script>
+        document.querySelectorAll('.faq__question').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                const plus = this.querySelector('span:last-child');
+                if (answer.style.display === 'block') {
+                    answer.style.display = 'none';
+                    plus.textContent = '+';
+                } else {
+                    answer.style.display = 'block';
+                    plus.textContent = '−';
+                }
+            });
+        });
+    </script>
 
     <!-- Schema.org -->
     <script type="application/ld+json">
